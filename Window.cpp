@@ -2,6 +2,7 @@
 
 #include <QDBusConnection>
 #include <QVBoxLayout>
+#include <QLabel>
 #include <QComboBox>
 #include <QListWidget>
 #include <QListWidgetItem>
@@ -9,12 +10,23 @@
 Window::Window(QWidget *parent) : QWidget(parent)
 {
     setLayout(new QVBoxLayout);
-    m_deviceList = new QComboBox;
-    m_networkList = new QListWidget;
-    m_knownNetworksList = new QListWidget;
 
+    QLabel *interfaceLabel = new QLabel(this);
+    interfaceLabel->setText("Interface");
+    m_deviceList = new QComboBox;
+    layout()->addWidget(interfaceLabel);
     layout()->addWidget(m_deviceList);
+
+    QLabel *networksLabel = new QLabel(this);
+    networksLabel->setText("Available Networks");
+    m_networkList = new QListWidget;
+    layout()->addWidget(networksLabel);
     layout()->addWidget(m_networkList);
+
+    QLabel *knownNetworkLabel = new QLabel(this);
+    knownNetworkLabel->setText("Known Networks");
+    m_knownNetworksList = new QListWidget;
+    layout()->addWidget(knownNetworkLabel);
     layout()->addWidget(m_knownNetworksList);
 
     connect(&m_iwd, &Iwd::visibleNetworkAdded, this, [=](const QString &name){
